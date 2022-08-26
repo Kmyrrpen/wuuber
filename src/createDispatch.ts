@@ -9,9 +9,7 @@ export type Flow<T = any> = (
 ) => any;
 export type ContainsFlows = { __flows: Flow | Next | Flow[] };
 
-const containsFlows = (
-  object: any,
-): object is ContainsFlows => {
+const containsFlows = (object: any): object is ContainsFlows => {
   return Boolean(object.__flows);
 };
 

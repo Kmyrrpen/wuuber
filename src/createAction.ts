@@ -8,31 +8,34 @@ export type Action<T = any> = {
   payload: T;
 };
 
-export type BaseCreator<PT> = ContainsFlows & {
+export interface BaseCreator<PT> extends ContainsFlows {
   type: string;
   match: (action: Action) => action is Action<PT>;
-};
-export type CreatorWithPayload<PT> = BaseCreator<PT> & {
+}
+export interface CreatorWithPayload<PT> extends BaseCreator<PT> {
   (payload: PT): Action<PT>;
-};
-export type CreatorOptionalPayload<PT> = BaseCreator<PT> & {
+}
+export interface CreatorOptionalPayload<PT> extends BaseCreator<PT> {
   (payload?: PT): Action<PT>;
-};
-export type CreatorEmptyPayload = BaseCreator<void> & {
+}
+export interface CreatorEmptyPayload extends BaseCreator<void> {
   (): Action<void>;
-};
+}
 
 export type ActionCreator<P> = true | false extends (
   P extends never ? true : false
 )
-  ? CreatorWithPayload<any> // payload can be anything
+  ? CreatorOptionalPayload<any> // payload can be anything
   : [void] extends [P]
   ? CreatorEmptyPayload // payload is void
   : [undefined] extends [P]
   ? CreatorOptionalPayload<P> // payload can be undefined
   : CreatorWithPayload<P>; // payload is never undefined
 
-export function createAction<P = void>(type: string, ...flows: Flow[]): ActionCreator<P>;
+export function createAction<P = void>(
+  type: string,
+  ...flows: Flow[]
+): ActionCreator<P>;
 export function createAction(type: string, ...flows: Flow[]): any {
   function actionCreator(...args: any[]) {
     return {

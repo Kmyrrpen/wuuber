@@ -1,12 +1,14 @@
-import { ActionCreator, createAction } from './createAction';
+import { Action, ActionCreator, createAction } from './createAction';
 import { ContainsFlows, Flow, Next } from './createDispatch';
 
 export type Reducer<T = any> = Next<T>;
 type Reducers = { [key: string]: Reducer<any> };
-type GetActionCreator<T> = T extends Flow<infer PT> ? ActionCreator<PT> : never;
-type ReducerWithFlows<T extends Reducers> = ContainsFlows & {
-  actions: { [key in keyof T]: GetActionCreator<T> };
-};
+type GetActionCreator<T> = T extends Reducer<infer PT>
+  ? ActionCreator<PT>
+  : never;
+interface ReducerWithFlows<T extends Reducers> extends ContainsFlows {
+  actions: { [key in keyof T]: GetActionCreator<T[key]> };
+}
 
 export function createReducer<T extends Reducers>(
   name: string,

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "allowJs": false,
+    "strict": true,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "declaration": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true
+  },
+  "include": ["src"],
+  "exclude": ["**/*.test.ts"]
+}

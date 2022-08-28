@@ -1,4 +1,4 @@
-import { Action, ActionCreator, createAction } from './createAction';
+import { ActionCreator, createAction } from './createAction';
 import { ContainsFlows, Flow, Next } from './createDispatch';
 
 export type Reducer<T = any> = Next<T>;

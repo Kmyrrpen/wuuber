@@ -11,5 +11,4 @@
     "noImplicitAny": true
   },
   "include": ["src"],
-  "exclude": ["**/*.test.ts"]
 }

@@ -25,7 +25,7 @@ export interface CreatorEmptyPayload extends BaseCreator<void> {
 export type ActionCreator<P> = true | false extends (
   P extends never ? true : false
 )
-  ? CreatorOptionalPayload<any> // payload can be anything
+  ? CreatorOptionalPayload<any> // payload is strictly any
   : [void] extends [P]
   ? CreatorEmptyPayload // payload is void
   : [undefined] extends [P]
@@ -34,7 +34,7 @@ export type ActionCreator<P> = true | false extends (
 
 export function createAction<P = void>(
   type: string,
-  ...flows: Flow[]
+  ...flows: Flow<P>[]
 ): ActionCreator<P>;
 export function createAction(type: string, ...flows: Flow[]): any {
   function actionCreator(...args: any[]) {
@@ -46,7 +46,13 @@ export function createAction(type: string, ...flows: Flow[]): any {
 
   actionCreator.match = (action: Action<unknown>) => action?.type === type;
   actionCreator.type = type;
-  actionCreator.__flows = flows;
+  actionCreator.__flows = flows.map((flow) => {
+    const newFlow: Flow = (action, next, dispatch) => {
+      if(actionCreator.match(action)) return flow(action, next, dispatch);
+      return next(action);
+    };
+    return newFlow;
+  });
 
   return actionCreator;
 }

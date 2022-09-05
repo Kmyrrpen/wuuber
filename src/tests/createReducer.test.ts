@@ -5,11 +5,11 @@ import { createReducer } from '../createReducer';
 describe(createReducer, () => {
   test('actions are typed correctly', () => {
     const reducer = createReducer('meta', {
-      strictNumber: (action: Action<number>) => {},
-      strictString: (action: Action<string>) => {},
-      optionalNumber: (action: Action<number | undefined>) => {},
-      emptyPayload: (action: Action<void>) => {},
-      anythingGoes: (action: Action<any>) => {},
+      strictNumber: (action: Action<number>) => action,
+      strictString: (action: Action<string>) => action,
+      optionalNumber: (action: Action<number | undefined>) => action,
+      emptyPayload: (action: Action<void>) => action,
+      anythingGoes: (action: Action<any>) => action,
     });
 
     const {
@@ -33,7 +33,7 @@ describe(createReducer, () => {
     // @ts-expect-error
     strictString(1);
 
-    expect(anythingGoes().type).toBe("meta/anythingGoes");
+    expect(anythingGoes().type).toBe('meta/anythingGoes');
     expect('types checked').toBeTruthy();
   });
 

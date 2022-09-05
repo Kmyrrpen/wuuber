@@ -2,7 +2,7 @@ import { Action, createAction } from '../createAction';
 import { createDispatch, Flow } from '../createDispatch';
 
 function makeshiftStore() {
-  let order = ['-start-'];
+  const order = ['-start-'];
   const flow1: Flow = (action: Action, next) => {
     order.push('-1-');
     return next(action);
@@ -66,8 +66,8 @@ describe(createDispatch, () => {
       return next(action);
     };
 
-    const dispatch = createDispatch(...flows, willDispatch, flowEnd);
-    dispatch(willDispatch());
+    const rootDispatch = createDispatch(...flows, willDispatch, flowEnd);
+    rootDispatch(willDispatch());
     expect(order.join('')).toBe(
       '-start--1--2--3--dispatched--1--2--3--end--end-',
     );

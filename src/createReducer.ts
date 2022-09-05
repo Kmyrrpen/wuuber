@@ -24,11 +24,11 @@ export function createReducer<T extends Reducers>(
   
   const actualReducers = reducers || name;
 
-  for (let entry of Object.entries(actualReducers)) {
-    const [key, reducer] = entry;
+  for (const entry of Object.entries(actualReducers)) {
+    const [key, value] = entry;
     const newName = reducers ? `${name}/${key}` : key;
 
-    map[newName] = reducer;
+    map[newName] = value;
     actions[key] = createAction(newName);
   }
 

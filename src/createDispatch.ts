@@ -17,12 +17,12 @@ export function createDispatch(...flows: (Flow | ContainsFlows)[]) {
   let root: Next = (action) => action;
   const dispatch: Dispatch = (action) => root(action);
 
-  let flattenedFlows = flows.flatMap((flow) => {
+  const flattenedFlows = flows.flatMap((flow) => {
     return containsFlows(flow) ? flow.__flows : flow;
   });
 
   for (let i = flattenedFlows.length - 1; i >= 0; --i) {
-    let temp = root;
+    const temp = root;
     root = (action) => flattenedFlows[i](action, temp, dispatch);
   }
 

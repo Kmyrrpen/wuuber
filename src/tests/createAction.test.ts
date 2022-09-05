@@ -30,11 +30,11 @@ describe(createAction, () => {
   });
 
   test('creating actions with flows attached to them', () => {
-    let number = 0;
+    let store = 0;
     const increment = createAction<number>(
       'number/increment',
       (action, next) => {
-        number += action.payload;
+        store += action.payload;
         return next(action);
       },
     );
@@ -42,7 +42,7 @@ describe(createAction, () => {
     const decrement = createAction<number>(
       'number/decrement',
       (action, next) => {
-        number -= action.payload;
+        store -= action.payload;
         return next(action);
       },
     );
@@ -50,11 +50,11 @@ describe(createAction, () => {
     const multiIncrement = createAction<number>(
       'number/multiIncrement',
       (action, next) => {
-        number += action.payload;
+        store += action.payload;
         return next(action);
       },
       (action, next) => {
-        number += action.payload;
+        store += action.payload;
         return next(action);
       },
     );
@@ -63,14 +63,14 @@ describe(createAction, () => {
 
     dispatch(increment(1));
     dispatch(increment(1));
-    expect(number).toBe(2);
+    expect(store).toBe(2);
 
     dispatch(decrement(2));
     dispatch(decrement(10));
-    expect(number).toBe(-10);
+    expect(store).toBe(-10);
 
     dispatch(multiIncrement(5));
     dispatch(multiIncrement(10));
-    expect(number).toBe(20);
+    expect(store).toBe(20);
   });
 });

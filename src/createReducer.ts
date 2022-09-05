@@ -10,20 +10,23 @@ interface ReducerWithFlows<T extends Reducers> extends ContainsFlows {
   actions: { [key in keyof T]: GetActionCreator<T[key]> };
 }
 
-export function createReducer<T extends Reducers>(
-  name: string,
-  flows: T,
-): ReducerWithFlows<T>;
+export function createReducer<T extends Reducers>(reducers: T): ReducerWithFlows<T>;
 export function createReducer<T extends Reducers>(
   name: string,
   reducers: T,
+): ReducerWithFlows<T>;
+export function createReducer<T extends Reducers>(
+  name: T | string,
+  reducers?: T,
 ): any {
   const map: { [key: string]: Reducer } = {};
   const actions: { [key: string]: ActionCreator<any> } = {};
+  
+  const actualReducers = reducers || name;
 
-  for (let entry of Object.entries(reducers)) {
+  for (let entry of Object.entries(actualReducers)) {
     const [key, reducer] = entry;
-    const newName = `${name}/${key}`;
+    const newName = reducers ? `${name}/${key}` : key;
 
     map[newName] = reducer;
     actions[key] = createAction(newName);

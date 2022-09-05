@@ -33,12 +33,13 @@ describe(createReducer, () => {
     // @ts-expect-error
     strictString(1);
 
+    expect(anythingGoes().type).toBe("meta/anythingGoes");
     expect('types checked').toBeTruthy();
   });
 
   test('reducers are ran correctly within dispatch', () => {
     let store: string[] = [];
-    const reducer = createReducer('example', {
+    const reducer = createReducer({
       increment: () => {
         store.push('-increment-');
       },

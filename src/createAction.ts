@@ -47,9 +47,9 @@ export function createAction(type: string, ...flows: Flow[]): any {
   actionCreator.match = (action: Action<unknown>) => action?.type === type;
   actionCreator.type = type;
   actionCreator.__flows = flows.map((flow) => {
-    const newFlow: Flow = (action, next, dispatch) => {
-      if(actionCreator.match(action)) return flow(action, next, dispatch);
-      return next(action);
+    const newFlow: Flow = (action, options) => {
+      if (actionCreator.match(action)) return flow(action, options);
+      return options.next(action);
     };
     return newFlow;
   });

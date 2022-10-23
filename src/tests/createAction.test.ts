@@ -33,7 +33,7 @@ describe(createAction, () => {
     let store = 0;
     const increment = createAction<number>(
       'number/increment',
-      (action, next) => {
+      (action, { next }) => {
         store += action.payload;
         return next(action);
       },
@@ -41,7 +41,7 @@ describe(createAction, () => {
 
     const decrement = createAction<number>(
       'number/decrement',
-      (action, next) => {
+      (action, { next }) => {
         store -= action.payload;
         return next(action);
       },
@@ -49,11 +49,11 @@ describe(createAction, () => {
 
     const multiIncrement = createAction<number>(
       'number/multiIncrement',
-      (action, next) => {
+      (action, { next }) => {
         store += action.payload;
         return next(action);
       },
-      (action, next) => {
+      (action, { next }) => {
         store += action.payload;
         return next(action);
       },

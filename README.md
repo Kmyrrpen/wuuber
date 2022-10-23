@@ -5,15 +5,15 @@ a small set of type-safe utility functions to create action-based logic.
 ## createDispatch
 createDispatch will call the first function given and pass the second function as the `next` argument and so on and so forth.
 
-A flow function has three arguments, `action`, `next` and `dispatch`. Calling `next` will call the next flow function in the chain, `dispatch` is the first flow function.
+A flow function has two arguments, `action`, and `options` that include a `next` function and `dispatch` function that calls the chain again. Calling `next` will call the next flow function in the chain, `dispatch` is the first flow function.
 
 ```ts
-const first: Flow = (action, next) => {
+const first: Flow = (action, { next }) => {
   console.log("first");
   return next(action);
 };
 
-const second: Flow = (action, next) => {
+const second: Flow = (action, { next }) => {
   console.log("second");
   return next(action);
 };
@@ -49,7 +49,7 @@ You can also pass flow functions after passing the type and use it inside `creat
 functions created will only run when the dispatched action matches the type.
 
 ```ts
-const pet = createAction("pet", (action, next) => {
+const pet = createAction("pet", (action, { next }) => {
   console.log("petting the doggo");
   return next(action);
 })

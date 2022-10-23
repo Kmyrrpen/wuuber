@@ -48,12 +48,12 @@ describe(createReducer, () => {
       },
     });
 
-    const flowStart: Flow = (action, next) => {
+    const flowStart: Flow = (action, { next }) => {
       store.push('-start-');
       return next(action);
     };
 
-    const flowEnd: Flow = (action, next) => {
+    const flowEnd: Flow = (action, { next }) => {
       store.push('-end-');
       return next(action);
     };

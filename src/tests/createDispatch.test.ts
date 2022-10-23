@@ -3,15 +3,15 @@ import { createDispatch, Flow } from '../createDispatch';
 
 function makeshiftStore() {
   const order = ['-start-'];
-  const flow1: Flow = (action: Action, next) => {
+  const flow1: Flow = (action: Action, { next }) => {
     order.push('-1-');
     return next(action);
   };
-  const flow2: Flow = (action: Action, next) => {
+  const flow2: Flow = (action: Action, { next }) => {
     order.push('-2-');
     return next(action);
   };
-  const flow3: Flow = (action: Action, next) => {
+  const flow3: Flow = (action: Action, { next }) => {
     order.push('-3-');
     return next(action);
   };
@@ -35,11 +35,11 @@ describe(createDispatch, () => {
 
   test('dispatch handles objects that contain flows', () => {
     const { order, flows } = makeshiftStore();
-    const actionWithFlow = createAction('fake-type', (action, next) => {
+    const actionWithFlow = createAction('fake-type', (action, { next }) => {
       order.push('-action-');
       next(action);
     });
-    const flowMustNotRun = createAction('other-fake-type', (action, next) => {
+    const flowMustNotRun = createAction('other-fake-type', (action, { next }) => {
       order.push('-NEVER-');
       next(action);
     });
@@ -54,14 +54,14 @@ describe(createDispatch, () => {
     const actionToBeDispatched = createAction('dispatched inside');
     const willDispatch = createAction(
       'dispatch when match',
-      (action, next, dispatch) => {
+      (action, { next, dispatch }) => {
         order.push('-dispatched-');
         dispatch(actionToBeDispatched());
         return next(action);
       },
     );
 
-    const flowEnd: Flow = (action, next) => {
+    const flowEnd: Flow = (action, { next }) => {
       order.push('-end-');
       return next(action);
     };

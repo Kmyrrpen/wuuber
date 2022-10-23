@@ -32,9 +32,9 @@ export function createReducer<T extends Reducers>(
     actions[key] = createAction(newName);
   }
 
-  const reducer: Flow = (action, next) => {
+  const reducer: Flow = (action, options) => {
     if (map[action.type]) map[action.type](action);
-    return next(action);
+    return options.next(action);
   };
 
   return {
